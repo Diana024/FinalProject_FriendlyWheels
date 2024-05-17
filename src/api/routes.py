@@ -3,7 +3,7 @@ from api.models import db, User, Vehicle, FavoriteVehicle
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager  # type: ignore
-# import stripe
+import stripe
 import os
 
 
