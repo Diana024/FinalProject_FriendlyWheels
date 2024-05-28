@@ -15,7 +15,7 @@ export const FiltroPrecio = (props) => {
                     </label>
                 </div>
                 <div className="form-check ms-2">
-                    <input onChange={() => props.setFiltroPrecio({ min: 0, max: 50 })} className="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault6" />
+                    <input onChange={() => props.setFiltroPrecio({ min: 1, max: 50 })} className="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault6" />
                     <label className="form-check-label" htmlFor="flexRadioDefault6">
                     1 € - 50 €
                     </label>
