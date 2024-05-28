@@ -49,7 +49,7 @@ export const Home = () => {
 	return (
 		<>
 			<div className="mt-5 d-flex justify-content-center text-center fs-4 text-dark-80">
-				<p><strong>¿Buscas o rentas tú coche? Estás en el lugar adecuado</strong></p>
+				<p><strong>¿Buscas o rentas tu coche? Estás en el lugar adecuado</strong></p>
 			</div>
 			<div className="d-flex justify-content-center text-center mt-2 fs-4 text-dark-80">
 				<div className="d-flex me-2 px-3">
