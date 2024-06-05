@@ -45,11 +45,6 @@ export const MisCoches = () => {
                                                 <p className="card-text fs-5"><strong>Matrícula:</strong> {vehicle.matricula.toUpperCase()}</p>
                                             </div>
                                             <div className="d-flex justify-content-end mt-auto pb-3">
-                                                <Link to={`/editarvehiculo/${vehicle.id}`}>
-                                                    <button className="btn-success btn-lg border-2 rounded me-3">
-                                                    <i className="fa-regular fa-pen-to-square"></i>
-                                                    </button>
-                                                </Link>
                                                 <button onClick={() => eliminarVehiculo(vehicle.id)} className="btn-danger btn-lg border-2 rounded me-3">
                                                     Eliminar
                                                 </button>

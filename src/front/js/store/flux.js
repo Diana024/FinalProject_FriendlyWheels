@@ -158,52 +158,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return []; 
 				}
 			},
-			updateOneVehicle: async (marca_modelo, matricula, motor, tipo_cambio, asientos, precio, vehicle_id, url_img1, url_img2, url_img3) => {
-				const token = localStorage.getItem("token")
-				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/vehicle/${vehicle_id}` , {
-						method:'PUT',
-						body: JSON.stringify({
-							marca_modelo: marca_modelo,
-							matricula: matricula,
-							motor: motor,
-							tipo_cambio: tipo_cambio,
-							asientos: asientos,
-							precio: precio,
-							url_img1: url_img1,
-							url_img2: url_img2,
-							url_img3: url_img3
-						}),
-						headers:{
-							'Content-Type':'application/json',
-							'Authorization': "Bearer " + token
-						},
-					})
-					if (response.status === 200) {
-						const oldVehicles = getStore().vehicles;
-						const newVehicles = oldVehicles.map((elem) => {
-							if (elem.id == vehicle_id) {
-								elem.marca_modelo = marca_modelo,
-								elem.matricula = matricula,
-								elem.motor = motor,
-								elem.tipo_cambio = tipo_cambio,
-								elem.asientos = asientos,
-								elem.precio = precio,
-								elem.url_img1 = url_img1,
-								elem.url_img2 = url_img2,
-								elem.url_img3 = url_img3
-							}
-							return elem;
-						});
-						setStore({
-							vehicles: newVehicles
-						})
-						return "success"
-					}
-				} catch (error) {
-					return [];
-				}
-			},
 			favorites: async () => {
 				const token = localStorage.getItem("token")
                 try {

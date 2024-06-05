@@ -8,7 +8,6 @@ import { Signup } from "./pages/signup";
 import { Home } from "./pages/home";
 import { Login } from "./pages/login";
 import { AgregarVehiculo } from "./pages/agregarvehiculo";
-import { EditarVehiculo } from "./pages/editarvehiculo";
 import { MisCoches } from "./pages/miscoches";
 import { Details } from "./pages/details";
 import { Payment } from "./pages/payment";
@@ -33,7 +32,6 @@ const Layout = () => {
                         <Route element={<Login />} path="/login" />
                         <Route element={<Signup />} path="/signup" />
                         <Route element={<AgregarVehiculo />} path="/agregarvehiculo" />
-                        <Route element={<EditarVehiculo />} path="/editarvehiculo/:id" />
                         <Route element={<MisCoches />} path="/miscoches" />
                         <Route element={<Favoritos />} path="/favoritos" />
                         <Route element={<Details />} path="/details/:id" />
