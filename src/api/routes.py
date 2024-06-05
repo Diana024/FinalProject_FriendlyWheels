@@ -70,7 +70,7 @@ def add_vehicle():
     
     # Creacion de producto en stripe
     new_product_stripe= stripe.Product.create(name=marca_modelo)
-    price_product_stripe= stripe.Price.create(
+    price_product= stripe.Price.create(
     product= new_product_stripe["id"],
     unit_amount= precio * 100,
     currency="eur",
@@ -83,8 +83,8 @@ def add_vehicle():
         tipo_cambio=tipo_cambio,
         asientos=asientos,
         precio=precio,
-        precio_id_stripe=price_product_stripe["id"],
-        producto_id_stripe=new_product_stripe["id"],
+        precio_id_stripe=price_product["id"],
+        producto_id_stripe=0,
         user_id= user_id,
         url_img1 = url_img1,
         url_img2 = url_img2,
@@ -126,13 +126,6 @@ def delete_vehicle(vehicle_id):
     else:
         vehicle_to_delete = Vehicle.query.filter_by(id=vehicle_id, user_id=user_id).first()
         if vehicle_to_delete:
-            
-            #Eliminar producto de stripe
-            stripe.Product.modify(
-                vehicle_to_delete.producto_id_stripe,
-                active=False
-            )
-
             favorites_to_delete = FavoriteVehicle.query.filter_by(vehicle_id=vehicle_id).all()
             db.session.delete(vehicle_to_delete)
             for favorite in favorites_to_delete:
@@ -141,54 +134,6 @@ def delete_vehicle(vehicle_id):
             return jsonify({"msg": "Vehículo eliminado correctamente"}), 200
         else:
             return ({"msg": "No puedes eliminar este vehículo, ya que no es un vehiculo propio"}), 400
-
-@api.route('vehicle/<int:vehicle_id>', methods=['PUT'])
-@jwt_required()
-def update_vehicle(vehicle_id):
-    email = get_jwt_identity()
-    user_exist = User.query.filter_by(email=email).first()
-    user_id = user_exist.id
-    vehicle_exist = Vehicle.query.filter_by(id=vehicle_id).first()
-    data = request.json
-    if vehicle_exist is None:
-        return jsonify({"msg": "El vehículo no existe"}), 400
-    else:
-        vehicle_to_update = Vehicle.query.filter_by(id=vehicle_id, user_id=user_id).first()
-        if vehicle_to_update:
-            if (data["marca_modelo"] == "" or data["matricula"] == "" or data["motor"] == "" or data["tipo_cambio"] == "" or data["asientos"] == "" or data["precio"] == ""):
-                return jsonify({"msg": "Todos los campos son obligatorios."}), 400
-            
-            # Editar producto en stripe
-            stripe.Price.modify(
-                vehicle_to_update.precio_id_stripe,
-                active = False
-            )
-            update_product_stripe = stripe.Product.modify(
-                vehicle_to_update.producto_id_stripe,
-                name = data["marca_modelo"]
-            )
-            update_price_stripe= stripe.Price.create(
-                product = update_product_stripe["id"],
-                unit_amount = data["precio"] * 100,
-                currency="eur",
-            )
-           
-            vehicle_to_update.marca_modelo=data["marca_modelo"], 
-            vehicle_to_update.matricula=data["matricula"], 
-            vehicle_to_update.motor=data["motor"], 
-            vehicle_to_update.tipo_cambio=data["tipo_cambio"],
-            vehicle_to_update.asientos=data["asientos"],
-            vehicle_to_update.precio=data["precio"],
-            vehicle_to_update.url_img1=data["url_img1"],
-            vehicle_to_update.url_img2=data["url_img2"],
-            vehicle_to_update.url_img3=data["url_img3"],
-            vehicle_to_update.precio_id_stripe=update_price_stripe["id"]
-            db.session.commit()
-            return ({"msg": "El vehiculo fue editado correctamente"}), 200
-        else:
-            return ({"msg": "No puedes editar este vehículo, ya que no es un vehiculo propio"}), 400
-
-
         
 @api.route("/favorite/vehicle/<int:vehicle_id>", methods=["POST"])
 @jwt_required()
