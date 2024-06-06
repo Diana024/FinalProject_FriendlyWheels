@@ -2,7 +2,7 @@
 
 Revision ID: 35d1d849184e
 Revises: 
-Create Date: 2024-06-04 10:27:24.780740
+Create Date: 2024-06-06 08:38:44.580581
 
 """
 from alembic import op
@@ -21,7 +21,7 @@ def upgrade():
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('email', sa.String(length=250), nullable=False),
-    sa.Column('password', sa.String(length=50), nullable=False),
+    sa.Column('password', sa.String(length=250), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
     )
