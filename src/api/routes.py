@@ -7,7 +7,9 @@ import stripe
 import os
 from flask_mail import Mail
 from flask_mail import Message
+import bcrypt 
 
+salt = bcrypt.gensalt()
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
@@ -17,7 +19,7 @@ CORS(api)
 def signup():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt) 
     user_exist = User.query.filter_by(email=email).first()
     if email == "" or password == "":
         return jsonify({"msg": "El email y password son obligatorios"}), 400
@@ -25,7 +27,7 @@ def signup():
     if user_exist is None:
         new_user = User(
             email=email,
-            password=password,
+            password=hashed_password.decode('utf-8'),
         )
         db.session.add(new_user)
         db.session.commit()
@@ -41,8 +43,10 @@ def login():
     user_exist = User.query.filter_by(email=email).first()
     if email == "" or password == "":
         return jsonify({"msg": "Todos los campos son obligatorios"}), 400
-    if email != user_exist.email or password != user_exist.password:
-        return jsonify({"msg": "El email o password no son correctos"}), 401
+    if email != user_exist.email:
+        return jsonify({"msg": "El email no es correcto"}), 401
+    if not bcrypt.checkpw(password.encode('utf-8'), user_exist.password.encode('utf-8')):
+        return jsonify({"msg": "El password no es correcto"}), 401
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token),200
 

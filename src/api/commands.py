@@ -21,10 +21,6 @@ def setup_commands(app):
         try:
             users = [
                 User(email="cadimain@gmail.com", password="111111"),
-                User(email="marta@gmail.com", password="222222"),
-                User(email="ines@gmail.com", password="333333"),
-                User(email="carmelo@gmail.com", password="444444"),
-                User(email="diana@gmail.com", password="555555"),
             ]
             db.session.add_all(users)
             db.session.commit()
